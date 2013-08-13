@@ -29,4 +29,27 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
   # HINT: use String#split to split up the rating_list, then
   #   iterate over the ratings and reuse the "When I check..." or
   #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
+  # debugger
+  # assert_equal uncheck, "un"
+    rating_list.split(", ").each do |rating|
+      # debugger
+      if uncheck
+        uncheck "ratings_#{rating}"
+      else
+        check "ratings_#{rating}"
+      end    
+  end
+end
+
+When /^I refresh the page/ do
+  visit [ current_path, page.driver.request.env['QUERY_STRING'] ].reject(&:blank?).join('?')
+end
+
+Then /^I should see the following movies:$/ do |movies|
+  # table is a Cucumber::Ast::Table
+      selected_movies = movies.hashes
+      # debugger
+      selected_movies.each do |movie|
+      assert page.body =~ /#{movie[:title]}/m, "#{movie[:title]} did not appear"
+    end
 end
