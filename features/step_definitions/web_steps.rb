@@ -49,9 +49,9 @@ When /^(?:|I )go to (.+)$/ do |page_name|
   visit path_to(page_name)
 end
 
-When /^(?:|I )press "([^"]*)"$/ do |button|
-  click_button(button)
-end
+# When /^(?:|I )press "([^"]*)"$/ do |button|
+#   click_button(button)
+# end
 
 When /^(?:|I )follow "([^"]*)"$/ do |link|
   click_link(link)
@@ -249,6 +249,4 @@ Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   end
 end
 
-Then /^show me the page$/ do
-  save_and_open_page
-end
+

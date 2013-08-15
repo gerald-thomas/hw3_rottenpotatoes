@@ -21,13 +21,11 @@ Background: movies have been added to database
 
   And  I am on the RottenPotatoes home page
   
-Scenario: restrict to movies with 'PG' or 'R' ratings
+Scenario: restrict to movies with G, 'PG' or 'R' ratings
 
   # enter step(s) to check the 'PG' and 'R' checkboxes
-  Given I am on the RottenPotatoes home page
-  And I check the following ratings: G, PG, R
-  And I uncheck the following ratings: PG-13
-  When I refresh the page
+  When I check the following ratings: G, PG, R
+  When I press "Refresh"
   Then I should see the following movies:
   | title                   | rating | release_date |
   | Aladdin                 | G      | 25-Nov-1992  |
@@ -44,8 +42,35 @@ Scenario: restrict to movies with 'PG' or 'R' ratings
   # enter step(s) to ensure that PG and R movies are visible
   # enter step(s) to ensure that other movies are not visible
 
+Scenario: A number of filters are checked
+  When I check the following ratings: G, PG, R
+  When I press "Refresh"
+  Then I should see all movies with ratings: G, PG, R
+
+
+Scenario: restrict to movies with 'PG' or 'R' ratings
+  When I check the following ratings: PG, R
+  And I uncheck the following ratings: G, PG-13
+  When I press "Refresh"
+  Then I should see the following movies:
+  | title                   | rating | release_date |
+  | The Terminator          | R      | 26-Oct-1984  |
+  | When Harry Met Sally    | R      | 21-Jul-1989  |
+  | Amelie                  | R      | 25-Apr-2001  |
+  | The Incredibles         | PG     | 5-Nov-2004   |
+  | Raiders of the Lost Ark | PG     | 12-Jun-1981  |
+  And I should not see movies with ratings: G, PG-13
+
 Scenario: no ratings selected
   # see assignment
+Given no ratings are selected
+Then show me the page
+When I press "Refresh"
+Then show me the page
+Then I should see no movies
 
 Scenario: all ratings selected
   # see assignment
+Given all ratings are selected
+When I press "Refresh"
+Then I should see all the movies
